@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AgriVision AI - Smart Farming</title>
+    
+    <!-- Google Fonts: Outfit for a modern, friendly, premium look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="ph-fill ph-plant"></i>
+                <span>AgriVision <strong>AI</strong></span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="lang-toggle" title="Switch Language">
+                    <i class="ph ph-translate"></i>
+                </button>
+                <div class="profile-avatar"></div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="app-content">
+            
+            <!-- View: Home -->
+            <section id="view-home" class="view active">
+                <div class="greeting-section">
+                    <h1>Good morning, <span>Farmer</span> 👋</h1>
+                    <p>Let's check on your crops today.</p>
+                </div>
+
+                <!-- Weather Widget -->
+                <div class="weather-card glass-panel">
+                    <div class="weather-info">
+                        <h2 id="weather-temp">28°C</h2>
+                        <p id="weather-desc">Partly Cloudy • 65% Humidity</p>
+                        <p class="location"><i class="ph-fill ph-map-pin"></i> Andhra Pradesh, India</p>
+                    </div>
+                    <div class="weather-icon">
+                        <i class="ph-fill ph-cloud-sun"></i>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="action-card primary" onclick="app.navigateTo('scanner')">
+                        <div class="action-icon"><i class="ph-fill ph-scan"></i></div>
+                        <h3>Scan Crop</h3>
+                        <p>Detect diseases instantly</p>
+                        <i class="ph-bold ph-arrow-right action-arrow"></i>
+                    </button>
+                    
+                    <button class="action-card secondary" onclick="app.navigateTo('chat')">
+                        <div class="action-icon"><i class="ph-fill ph-chat-teardrop-text"></i></div>
+                        <h3>Ask AI Expert</h3>
+                        <p>Get farming advisory</p>
+                        <i class="ph-bold ph-arrow-right action-arrow"></i>
+                    </button>
+                </div>
+
+                <!-- Recent Scans (Mock) -->
+                <div class="recent-section">
+                    <div class="section-header">
+                        <h3>Recent Activity</h3>
+                        <button class="text-btn">View All</button>
+                    </div>
+                    <div class="recent-list">
+                        <div class="recent-item">
+                            <div class="recent-thumb tomato-thumb"></div>
+                            <div class="recent-details">
+                                <h4>Tomato Plant</h4>
+                                <p class="alert-text"><i class="ph-fill ph-warning-circle"></i> Early Blight detected</p>
+                            </div>
+                            <span class="recent-time">2h ago</span>
+                        </div>
+                        <div class="recent-item">
+                            <div class="recent-thumb soil-thumb"></div>
+                            <div class="recent-details">
+                                <h4>Soil Check</h4>
+                                <p class="success-text"><i class="ph-fill ph-check-circle"></i> Moisture levels optimal</p>
+                            </div>
+                            <span class="recent-time">Yesterday</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View: Scanner -->
+            <section id="view-scanner" class="view">
+                <div class="view-header">
+                    <h2>Crop Scanner</h2>
+                    <p>Take a clear picture of the affected leaf or plant</p>
+                </div>
+
+                <div class="scanner-container">
+                    <div class="camera-frame glass-panel" id="camera-frame">
+                        <input type="file" id="image-input" accept="image/*" capture="environment" hidden>
+                        <div class="upload-prompt" id="upload-prompt">
+                            <i class="ph ph-camera-plus"></i>
+                            <p>Tap to open camera or gallery</p>
+                        </div>
+                        <img id="image-preview" class="hidden" alt="Crop preview">
+                        <div class="scanning-overlay hidden" id="scanning-overlay">
+                            <div class="scan-line"></div>
+                            <p>AI is analyzing your crop...</p>
+                        </div>
+                    </div>
+
+                    <div class="scanner-actions">
+                        <button class="btn btn-primary btn-large w-100 hidden" id="btn-analyze">
+                            <i class="ph-bold ph-magic-wand"></i> Analyze Image
+                        </button>
+                        <button class="btn btn-outline btn-large w-100 hidden" id="btn-retake">
+                            <i class="ph-bold ph-arrow-counter-clockwise"></i> Retake
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Card -->
+                <div class="results-container hidden" id="results-card">
+                    <div class="result-header">
+                        <div class="result-badge warning" id="result-badge">
+                            <i class="ph-fill ph-warning"></i> Action Required
+                        </div>
+                        <span class="confidence" id="result-confidence">92% Confidence</span>
+                    </div>
+                    
+                    <h3 id="disease-name" class="disease-name">Detecting...</h3>
+                    
+                    <div class="result-section">
+                        <h4><i class="ph-fill ph-info"></i> Assessment</h4>
+                        <p id="assessment-text">Loading details...</p>
+                    </div>
+
+                    <div class="result-section">
+                        <h4><i class="ph-fill ph-prescription"></i> Recommendation</h4>
+                        <p id="recommendation-text">Loading recommendations...</p>
+                    </div>
+
+                    <div class="disclaimer-box">
+                        <i class="ph-fill ph-warning-circle"></i>
+                        <p><strong>Disclaimer:</strong> This AI diagnosis is for guidance only. Please consult a local agricultural expert before applying chemicals.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View: Chat -->
+            <section id="view-chat" class="view">
+                <div class="view-header chat-header">
+                    <div class="ai-avatar">
+                        <i class="ph-fill ph-robot"></i>
+                    </div>
+                    <div>
+                        <h2>AI Agri Advisor</h2>
+                        <p class="status-online"><span class="dot"></span> Online</p>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message ai-message">
+                        <div class="msg-bubble">
+                            Namaste! I am your AI Agri Advisor. How can I help you with your farming today?
+                        </div>
+                        <span class="msg-time">Just now</span>
+                    </div>
+                </div>
+
+                <div class="chat-input-area glass-panel">
+                    <button class="icon-btn"><i class="ph ph-microphone"></i></button>
+                    <input type="text" id="chat-input" placeholder="Ask about soil, pests, weather...">
+                    <button class="icon-btn primary-text" id="btn-send-chat"><i class="ph-fill ph-paper-plane-right"></i></button>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-target="home">
+                <i class="ph ph-house"></i>
+                <i class="ph-fill ph-house active-icon"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-item scanner-nav" data-target="scanner">
+                <div class="scanner-btn-inner">
+                    <i class="ph-bold ph-scan"></i>
+                </div>
+            </button>
+            <button class="nav-item" data-target="chat">
+                <i class="ph ph-chats"></i>
+                <i class="ph-fill ph-chats active-icon"></i>
+                <span>Advisor</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
